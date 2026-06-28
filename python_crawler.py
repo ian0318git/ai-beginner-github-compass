@@ -56,7 +56,7 @@ def scrape_github_trending(language: Optional[str] = None, spoken_language_code:
         
         soup = BeautifulSoup(response.text, "html.parser")
         # GitHub Trending 每個項目都放在 <article class="Box-row"> 中
-        repo_articles = soup.find_all("article", class="Box-row")
+        repo_articles = soup.find_all("article", class_="Box-row")
         
         trending_repos = []
         for index, article in enumerate(repo_articles, start=1):
@@ -64,7 +64,7 @@ def scrape_github_trending(language: Optional[str] = None, spoken_language_code:
             
             # 1. 抓取作者與項目名稱
             # 位於 h2 class="h3 lh-condensed" 底下的 <a> 標籤
-            title_tag = article.find("h2", class="h3")
+            title_tag = article.find("h2", class_="h3")
             if not title_tag:
                 continue
             a_tag = title_tag.find("a")
@@ -83,7 +83,7 @@ def scrape_github_trending(language: Optional[str] = None, spoken_language_code:
             
             # 2. 抓取項目描述 (Description)
             # 位於 <p class="col-9 text-gray my-1 pr-4"> 內
-            desc_tag = article.find("p", class="col-9")
+            desc_tag = article.find("p", class_="col-9")
             repo_info["description"] = desc_tag.text.strip() if desc_tag else "No description available."
             
             # 3. 抓取程式語言 (Language)
@@ -94,9 +94,9 @@ def scrape_github_trending(language: Optional[str] = None, spoken_language_code:
             # 4. 抓取總星星數 (Stars) 與 分叉數 (Forks)
             # 尋找帶有特定 SVG 圖標的 <a> 標籤，或者在底部的 div 內尋找
             # 我們可以直接抓取特定 class 或遍歷連結
-            meta_links = article.find_all("a", class="Link--muted")
+            meta_links = article.find_all("a", class_="Link--muted")
             
-            # 第一個 Link--muted 通常是 Stars，第二個是 Forks
+            # 第一個 Link--muted 通常是 Stars，第二個 is Forks
             stars_text = "0"
             forks_text = "0"
             if len(meta_links) >= 1:
@@ -119,7 +119,7 @@ def scrape_github_trending(language: Optional[str] = None, spoken_language_code:
             
             # 5. 抓取今日新增星星數 (Stars Today)
             # 位於底部帶有 "stars today" 結尾文本的 span
-            today_stars_tag = article.find("span", class="d-inline-block float-sm-right")
+            today_stars_tag = article.find("span", class_="d-inline-block float-sm-right")
             if today_stars_tag:
                 # 文字格式通常為 "X stars today" 或 "X stars this week"
                 today_text = today_stars_tag.text.strip()
