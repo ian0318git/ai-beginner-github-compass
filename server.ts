@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
+import os from "os";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
@@ -464,12 +465,14 @@ async function startServer() {
 }
 
 function printLocalIPs() {
-  const { networkInterfaces } = require("os");
-  const nets = networkInterfaces();
+  const nets = os.networkInterfaces();
   for (const name of Object.keys(nets)) {
-    for (const net of nets[name]) {
-      if (net.family === "IPv4" && !net.internal) {
-        console.log(`🌐 區域網路存取：http://${net.address}:${PORT}`);
+    const netList = nets[name];
+    if (netList) {
+      for (const net of netList) {
+        if (net.family === "IPv4" && !net.internal) {
+          console.log(`🌐 區域網路存取：http://${net.address}:${PORT}`);
+        }
       }
     }
   }
