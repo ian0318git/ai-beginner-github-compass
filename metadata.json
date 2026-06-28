@@ -1,0 +1,6 @@
+{
+  "name": "AI Beginner Github Compass",
+  "description": "A GitHub trending navigator and AI-curated project compass for AI beginners, powered by Gemini and live GitHub API integration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
